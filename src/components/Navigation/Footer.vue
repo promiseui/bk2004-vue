@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-tabbar v-model="active" @change="changeItem" active-color="#ff5f16">
+    <van-tabbar v-model="active" @change="changeItem" active-color="#ff5f16" >
       <van-tabbar-item>
         <van-icon
           class-prefix="iconfont icon-dianying"

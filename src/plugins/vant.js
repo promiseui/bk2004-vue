@@ -8,7 +8,10 @@ import {
     Card,
     Button,
     Loading,
-    Tag    
+    Tag,
+    PullRefresh,
+    Toast,
+    List,
 } from 'vant'
 
 
@@ -21,4 +24,7 @@ Vue.use(Card)
 Vue.use(Button)
 Vue.use(Loading)
 Vue.use(Tag)
+Vue.use(PullRefresh)
+Vue.use(Toast)
+Vue.use(List)
 

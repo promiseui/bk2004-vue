@@ -1,10 +1,15 @@
 <template>
-  <div>
-    <div>
+  <div class="container">
+    <!-- 下拉刷新 -->
+    <van-pull-refresh v-model="isLoad" @refresh="onRefresh">
+      
+      <!-- 加载中 -->
       <van-loading class="loading" type="spinner" v-if="isLoading" size="24px"
         >加载中...</van-loading
       >
-      <van-card v-for="item in nowPlayingList" :key="item.filmId">
+
+      <!-- 卡片区域 -->
+      <van-card v-for="item in nowPlayingList" :key="item.filmId" @click="toDetail(item.filmId)">
         <!-- 封面图片 -->
         <template #thumb>
           <img :src="item.poster" class="img" alt="" />
@@ -17,6 +22,7 @@
         <!-- 电影介绍 -->
         <template #desc>
           <div class="desc">
+            <div class="buy">购票</div>
             <div>
               观众评分<span class="grade">{{ item.grade }}</span>
             </div>
@@ -24,21 +30,24 @@
             <div>{{ item.nation }} | {{ item.runtime }}分钟</div>
           </div>
         </template>
-        <template #tags>
-          <van-tag plain type="danger" class="buy">购票</van-tag>
-        </template>
       </van-card>
-    </div>
+    </van-pull-refresh>
   </div>
 </template>
 
 <script>
 import uri from "@/config/uri";
+
 export default {
   data() {
     return {
+      // 数据源
       nowPlayingList: [],
+      // 加载中
       isLoading: true,
+      // 下拉刷新
+      isLoad: true,
+      pageNum: 1,
     };
   },
   filters: {
@@ -54,18 +63,44 @@ export default {
       }
     },
   },
-  async created() {
-    const res = await this.$http.get(uri.getNowPlayngFilm);
-    if (res.status === 0) {
-      this.nowPlayingList = res.data.films;
+  created() {
+    this.getData();
+  },
+  methods: {
+    onRefresh() {
+       this.getData()
+    },
+    // 获取电影数据
+    async getData() {
+      const res = await this.$http.get(
+        uri.getNowPlayngFilm + "?pageNum=" + this.pageNum
+      );
+      // 请求数据成功
+      if (res.status === 0) {
+        if (this.pageNum <= Math.ceil(res.data.total / 10)) {
+          this.nowPlayingList = [...res.data.films, ...this.nowPlayingList];
+          this.pageNum ++;
+        }
+      }else{
+        Toast.fail('网络繁忙')
+      }
+      this.isLoading = false;
+      this.isLoad = false;
+      console.log(this.nowPlayingList);
+    },
+    // 跳转到详情页
+    toDetail(id){
+      this.$router.push(`/film/${id}`)
+      // console.log(this.$route);
     }
-    this.isLoading = false;
-    console.log(res);
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.container {
+  margin-bottom: 50px;
+}
 .loading {
   text-align: center;
   margin-top: 10px;
@@ -106,12 +141,15 @@ export default {
   color: #797d82;
 }
 .buy {
-  text-align: center;
-  width: 29px;
-  height: 25px;
-  border: 1px solid #ff5f16;
-  margin-top: -45px;
-  border-radius: 4px;
   float: right;
+  line-height: 25px;
+  height: 25px;
+  width: 50px;
+  color: #ff5f16;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 2px;
+  border: 1px solid #ff5f16;
+  border-radius: 4px;
 }
 </style>
