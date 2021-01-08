@@ -3,7 +3,7 @@ import {
     Tabbar,
     TabbarItem,
     Icon,
-    Tab, 
+    Tab,
     Tabs,
     Card,
     Button,
@@ -12,6 +12,11 @@ import {
     PullRefresh,
     Toast,
     List,
+    IndexBar,
+    IndexAnchor,
+    Cell,
+    Form,
+    Field,
 } from 'vant'
 
 
@@ -27,4 +32,9 @@ Vue.use(Tag)
 Vue.use(PullRefresh)
 Vue.use(Toast)
 Vue.use(List)
+Vue.use(IndexBar)
+Vue.use(IndexAnchor)
+Vue.use(Cell)
+Vue.use(Form)
+Vue.use(Field)
 

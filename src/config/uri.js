@@ -6,7 +6,9 @@ export default {
     // 正在热映
     getNowPlayngFilm: prefix + '/getNowPlayingFilmList',
     // 即将上映
-    getComingSoonFilmList:prefix+'/getComingSoonFilmList',
+    getComingSoonFilmList: prefix + '/getComingSoonFilmList',
     // 详情页
-    getFilmInfo:prefix+'getFilmInfo'
+    getFilmInfo: prefix + 'getFilmInfo',
+    // 城市列表
+    getCitiesInfo: prefix + 'getCitiesInfo'
 }
